@@ -12,13 +12,59 @@ detalhaCliente(id).then( dados => {
 
 const formEdicao = document.querySelector('[data-form]')
 
+const mensagemSucesso = (mensagem) => {
+    const linha = document.createElement('tr')
+    
+    const conteudoLinha = 
+        `
+         <div class='alert alert-success' role= 'alert'>
+            ${mensagem}
+         </div>
+         `
+
+    linha.innerHTML = conteudoLinha
+    return linha;
+}
+
+const mensagemErro = (mensagem) => {
+    const linha = document.createElement('tr')
+    
+    const conteudoLinha = 
+        `
+         <div class='alert alert-warning' role= 'alert'>
+            ${mensagem}
+         </div>
+         `
+
+    linha.innerHTML = conteudoLinha
+    return linha;
+}
+
 formEdicao.addEventListener('submit', event => {
     event.preventDefault()
 
     if(!validaCPF(inputCPF.value)){
-        alert('Esse CPF NÃO existe')
+        alert('ESSE CPF NÃO EXISTE')
         return
     }
 
-    editaCliente(id, inputCPF.value, inputNome.value )
+    if(inputCPF.value.length !== 11 ){
+        alert('Esse CPF não existe, deve ter 11 dígitos!')
+        return
+    }
+
+    editaCliente(id, inputCPF.value, inputNome.value )    
+    .then(resposta => {
+        if (resposta.status === 200){
+            formEdicao.appendChild(mensagemSucesso(
+                'Cliente Editado com Sucesso!'
+            ))
+        }
+        else{
+            formEdicao.appendChild(mensagemErro(
+                'Erro ao editar o cliente'
+            ))
+        }
+    }) 
 })
+
