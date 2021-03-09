@@ -1,4 +1,4 @@
-const formCadastroCliente = document.querySelector('[data-form]')
+formCadastroCliente = document.querySelector('[data-form]')
 
 formCadastroCliente.addEventListener("submit", event => {
     event.preventDefault()
